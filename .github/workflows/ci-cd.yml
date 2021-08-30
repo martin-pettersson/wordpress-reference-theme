@@ -108,11 +108,11 @@ jobs:
               with:
                   name: reference-${{ env.VERSION }}
             - name: Sync
-              uses: burnett01/rsync-deployments@5.1
+              uses: up9cloud/action-rsync@v1.1
               env:
-                  switches: -avzr --delete
-                  path: reference-${{ env.VERSION }}.zip
-                  remote_host: ${{ secrets.REMOTE_HOST }}
-                  remote_user: ${{ secrets.REMOTE_USER }}
-                  remote_key: ${{ secrets.REMOTE_KEY }}
-                  remote_path: ${{ secrets.REMOTE_PATH }}
+                  ARGS: -avzr --delete
+                  SOURCE: reference-${{ env.VERSION }}.zip
+                  HOST: ${{ secrets.REMOTE_HOST }}
+                  USER: ${{ secrets.REMOTE_USER }}
+                  KEY: ${{ secrets.REMOTE_KEY }}
+                  TARGET: ${{ secrets.REMOTE_PATH }}
