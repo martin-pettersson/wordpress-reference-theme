@@ -19,11 +19,13 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - name: Cache Composer Dependencies
+              id: composer-cache
               uses: actions/cache@v2
               with:
-                  path: /tmp/composer-cache
+                  path: vendor/
                   key: ${{ runner.os }}-${{ hashFiles('composer.lock') }}
-            - uses: php-actions/composer@v6
+            - if: steps.composer-cache.outputs.cache-hit != 'true'
+              uses: php-actions/composer@v6
               with:
                   php_version: 7.4
                   command: install
@@ -37,11 +39,13 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - name: Cache Composer Dependencies
+              id: composer-cache
               uses: actions/cache@v2
               with:
-                  path: /tmp/composer-cache
+                  path: vendor/
                   key: ${{ runner.os }}-${{ hashFiles('composer.lock') }}
-            - uses: php-actions/composer@v6
+            - if: steps.composer-cache.outputs.cache-hit != 'true'
+              uses: php-actions/composer@v6
               with:
                   php_version: 7.4
                   command: install
@@ -49,3 +53,48 @@ jobs:
               with:
                   php_version: 7.4
                   command: analyze
+    package:
+        name: Package Theme
+        needs:
+            - lint
+            - analyze
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Cache Composer Dependencies
+              id: composer-cache
+              uses: actions/cache@v2
+              with:
+                  path: vendor/
+                  key: ${{ runner.os }}-${{ hashFiles('composer.lock') }}
+            - if: steps.composer-cache.outputs.cache-hit != 'true'
+              uses: php-actions/composer@v6
+              with:
+                  php_version: 7.4
+                  command: install
+            - uses: php-actions/composer@v6
+              with:
+                  php_version: 7.4
+                  command: package
+            - uses: actions/upload-artifact@v2
+              with:
+                  name: Theme
+                  path: reference.zip
+    deploy:
+        if: startsWith(github.ref, 'refs/tags/')
+        name: Deploy
+        needs: package
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/download-artifact@v2
+              with:
+                  name: Theme
+            - name: Sync
+              uses: burnett01/rsync-deployments@5.1
+              env:
+                  switches: -avzr --delete
+                  path: reference.zip
+                  remote_host: ${{ secrets.REMOTE_HOST }}
+                  remote_user: ${{ secrets.REMOTE_USER }}
+                  remote_key: ${{ secrets.REMOTE_KEY }}
+                  remote_path: ${{ secrets.REMOTE_PATH }}

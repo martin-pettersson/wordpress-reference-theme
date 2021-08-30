@@ -18,11 +18,11 @@
 		],
 		"package": [
 			"mkdir reference/",
-			"cp -r composer.* package* webpack.config.js *.php src/ resources/ languages/ reference/",
+			"cp -r composer.* package* webpack.config.js style.css *.php src/ resources/ languages/ reference/",
 			"composer install --working-dir reference/ --no-dev --ignore-platform-reqs",
 			"npm install --prefix reference/",
 			"npm run build --prefix reference/",
-			"rm -rf reference/webpack.config.js reference/composer.* reference/package* reference/node_modules/ reference/resources/{js,sass}/",
+			"rm -rf reference/webpack.config.js reference/composer.* reference/package* reference/node_modules/ reference/resources/js/ reference/resources/sass/",
 			"zip -r reference.zip reference/",
 			"rm -rf reference/"
 		],
