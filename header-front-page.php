@@ -12,7 +12,7 @@ $logo_image_data = has_custom_logo() ?
 	wp_get_attachment_image_src( get_theme_mod( 'custom_logo' ) ) :
 	false;
 $header_image    = is_front_page() && has_header_image() ?
-	(get_header_image() ?: null) : // phpcs:ignore WordPress.PHP.DisallowShortTernary.Found
+	( get_header_image() ?: null ) : // phpcs:ignore WordPress.PHP.DisallowShortTernary.Found
 	null;
 $header_classes  = array(
 	'site-header',
