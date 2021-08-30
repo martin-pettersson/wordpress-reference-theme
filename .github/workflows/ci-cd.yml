@@ -5,7 +5,7 @@ on:
             - 'release/*'
         tags:
             - '*'
-    pull_requests:
+    pull_request:
         types:
             - opened
             - synchronize
@@ -26,7 +26,6 @@ jobs:
             - uses: php-actions/composer@v6
               with:
                   php_version: 7.4
-                  lint:
     lint:
         name: Lint Project
         needs: build
