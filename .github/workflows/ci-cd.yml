@@ -73,13 +73,13 @@ jobs:
             - run: npm run build
             - run: >
                 zip -r reference.zip
-                    style.css
-                    *.php
-                    src/
-                    resources/{fonts,templates}/
-                    assets/
-                    vendor/
-                    languages/
+                style.css
+                *.php
+                src/
+                resources/{fonts,templates}/
+                assets/
+                vendor/
+                languages/
             - uses: actions/upload-artifact@v2
               with:
                   name: Theme
