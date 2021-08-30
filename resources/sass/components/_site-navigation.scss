@@ -1,0 +1,220 @@
+/**
+ * Reference: Navigation styles
+ *
+ * @package Reference
+ * @author Martin Pettersson
+ * @license GPL-2.0
+ * @since 0.1.0
+ */
+
+@use 'sass:math';
+@use 'settings/breakpoints';
+@use 'settings/colors';
+@use 'settings/typography';
+
+$accent: colors.$accent !default;
+$background: colors.$dark !default;
+$color: colors.$light !default;
+$height: 56px !default;
+$item-spacing: 1em !default;
+$submenu-margin: 0.5em;
+$text-shadow: 1px 1px 1px hsla(0, 0%, 0%, 0.5);
+
+.site-navigation {
+	background: scale-color($background, $alpha: -5%);
+	box-sizing: border-box;
+	font-family: typography.$body;
+	height: 100%;
+	line-height: $height;
+	max-width: calc(100% - 2em);
+	overflow-y: auto;
+	padding-bottom: $height;
+	position: fixed;
+	right: 0;
+	top: $height;
+	transform: translateX(100%);
+	transition: transform 0.25s ease;
+	width: 16em;
+
+	@supports (backdrop-filter: blur(1px)) {
+		backdrop-filter: saturate(180%) blur(20px);
+		background: scale-color($background, $alpha: -15%);
+	}
+
+	@media (min-width: breakpoints.$mobile) {
+		backdrop-filter: none;
+		background: none;
+		max-width: 100%;
+		overflow: visible;
+		padding-bottom: 0;
+		position: relative;
+		top: 0;
+		transform: none;
+		width: auto;
+	}
+
+	&--visible & {
+		transform: translateX(0);
+	}
+
+	&__menu {
+		@media (min-width: breakpoints.$mobile) {
+			align-items: center;
+			display: flex;
+
+			> .menu-item.menu-item {
+				border-bottom: 0;
+			}
+		}
+	}
+
+	.menu-item {
+		border-bottom: solid 1px hsla(0, 0%, 0%, 0.2);
+		color: scale-color($color, $alpha: -5%);
+		position: relative;
+		user-select: none;
+		white-space: nowrap;
+
+		@media (min-width: breakpoints.$mobile) {
+			&:hover {
+				.sub-menu {
+					display: block;
+				}
+			}
+		}
+
+		a {
+			display: block;
+			height: $height;
+			overflow-x: hidden;
+			padding: 0 2em;
+			text-decoration: none;
+			text-overflow: ellipsis;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+
+		&-has-children {
+			$carot-size: 5px;
+
+			&::before {
+				content: "";
+				cursor: pointer;
+				height: $height;
+				position: absolute;
+				right: 0;
+				top: 0;
+				width: 3.75em;
+
+				@media (min-width: breakpoints.$mobile) {
+					display: none;
+				}
+			}
+
+			&::after {
+				border: solid $carot-size;
+				border-color: $accent transparent transparent transparent;
+				content: "";
+				display: block;
+				height: 0;
+				pointer-events: none;
+				position: absolute;
+				right: 1.5em;
+				top: calc(#{$height} / 2 + #{$carot-size} / 2);
+				transform: translateY(-50%);
+				width: 0;
+
+				@media (min-width: breakpoints.$mobile) {
+					background: $accent;
+					border: 0;
+					box-shadow: none;
+					height: $carot-size;
+					right: 1em;
+					top: math.div($height, 2);
+					width: $carot-size;
+
+					.site-header--transparent & {
+						box-shadow: $text-shadow;
+					}
+				}
+			}
+
+			&--expanded {
+				border-bottom: 0;
+
+				&::after {
+					border-color: transparent transparent $accent transparent;
+					top: calc(#{$height} / 2 - #{$carot-size} / 2);
+				}
+
+				> .sub-menu {
+					display: block;
+				}
+			}
+		}
+	}
+
+	.sub-menu {
+		background: hsla(0, 0%, 0%, 0.2);
+		border-bottom: solid 1px hsla(0, 100%, 100%, 0.2);
+		box-shadow: inset 0 3px 3px -2px hsla(0, 0%, 0%, 0.2);
+		display: none;
+		min-width: 100%;
+		text-shadow: none;
+
+		.menu-item:last-child {
+			border-bottom: 0;
+		}
+
+		@media (min-width: breakpoints.$mobile) {
+			background: scale-color($background, $alpha: -5%);
+			border-bottom: 0;
+			box-shadow: none;
+			margin-top: $submenu-margin;
+			position: absolute;
+
+			@supports (backdrop-filter: blur(1px)) {
+				backdrop-filter: saturate(180%) blur(20px);
+				background: scale-color($background, $alpha: -15%);
+			}
+
+			&::before {
+				content: "";
+				height: $submenu-margin;
+				left: 0;
+				position: absolute;
+				top: -$submenu-margin;
+				width: 100%;
+			}
+		}
+	}
+}
+
+.site-overlay {
+	background: hsla(0, 0%, 0%, 0.75);
+	height: 100%;
+	left: 0;
+	opacity: 0;
+	pointer-events: none;
+	position: fixed;
+	top: 0;
+	transition: opacity 0.25s ease;
+	width: 100%;
+	z-index: 99;
+
+	@supports (backdrop-filter: blur(1px)) {
+		backdrop-filter: saturate(80%) blur(10px);
+		background: hsla(0, 0%, 0%, 0.2);
+	}
+
+	@media (min-width: breakpoints.$mobile) {
+		display: none;
+	}
+
+	.site-navigation--visible & {
+		opacity: 1;
+		pointer-events: all;
+	}
+}

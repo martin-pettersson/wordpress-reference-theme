@@ -1,0 +1,19 @@
+/**
+ * Reference: Content styles
+ *
+ * @package Reference
+ * @author Martin Pettersson
+ * @license GPL-2.0
+ * @since 0.1.0
+ */
+
+.site-content {
+	margin: 0 auto;
+	max-width: 1400px;
+	overflow: hidden;
+	padding: 3rem 1rem 1rem 1rem;
+
+	:first-child {
+		margin-top: 0;
+	}
+}

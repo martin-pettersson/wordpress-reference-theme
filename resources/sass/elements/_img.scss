@@ -1,0 +1,36 @@
+/**
+ * Reference: Img element styles
+ *
+ * @package Reference
+ * @author Martin Pettersson
+ * @license GPL-2.0
+ * @since 0.1.0
+ */
+
+img {
+	$margin: 0.5em;
+
+	box-sizing: border-box;
+	display: block;
+	height: auto;
+	max-width: 100%;
+
+	&.alignnone,
+	&.aligncenter {
+		margin: $margin 0;
+	}
+
+	&.aligncenter {
+		margin: 0 auto;
+	}
+
+	&.alignleft {
+		float: left;
+		margin: $margin $margin * 2 $margin 0;
+	}
+
+	&.alignright {
+		float: right;
+		margin: $margin 0 $margin $margin * 2;
+	}
+}

@@ -1,0 +1,24 @@
+/**
+ * Reference: General alignment styles
+ *
+ * @package Reference
+ * @author Martin Pettersson
+ * @license GPL-2.0
+ * @since 0.1.0
+ */
+
+$margin: 0.5em;
+
+.aligncenter {
+	margin: 0 auto;
+}
+
+.alignleft {
+	float: left;
+	margin-right: $margin;
+}
+
+.alignright {
+	float: right;
+	margin-left: $margin;
+}

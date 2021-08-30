@@ -1,0 +1,29 @@
+{
+	"name": "@martin-pettersson/wordpress-reference-theme",
+	"version": "0.1.0",
+	"description": "A WordPress theme to use as a reference.",
+	"main": "index.js",
+	"scripts": {
+		"start": "wp-scripts start resources/js/*.js resources/sass/*.scss --output-path=assets/",
+		"build": "wp-scripts build resources/js/*.js resources/sass/*.scss --output-path=assets/"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/martin-pettersson/wordpress-reference-theme.git"
+	},
+	"keywords": [
+		"wordpress",
+		"theme",
+		"reference"
+	],
+	"author": "Martin Pettersson <martin@moonwalkingbits.com>",
+	"license": "GPL-2.0",
+	"bugs": {
+		"url": "https://github.com/martin-pettersson/wordpress-reference-theme/issues"
+	},
+	"homepage": "https://github.com/martin-pettersson/wordpress-reference-theme#readme",
+	"devDependencies": {
+		"@wordpress/scripts": "~17.0"
+	},
+	"dependencies": {}
+}

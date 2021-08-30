@@ -1,0 +1,49 @@
+/**
+ * Reference: General typography styles
+ *
+ * @package Reference
+ * @author Martin Pettersson
+ * @license GPL-2.0
+ * @since 0.1.0
+ */
+
+@use 'settings/typography';
+
+body {
+	font-family: typography.$body;
+	line-height: 1.3;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: typography.$heading;
+	margin-bottom: 1em;
+	margin-top: 1.5em;
+}
+
+p {
+	font-size: 1em;
+}
+
+h1 {
+	font-size: 2em;
+}
+
+h2 {
+	font-size: 1.7411em;
+}
+
+h3 {
+	font-size: 1.5157em;
+}
+
+h4 {
+	font-size: 1.3195em;
+}
+
+h5 {
+	font-size: 1.1487em;
+}
+
+footer {
+	font-size: 0.8706em;
+}

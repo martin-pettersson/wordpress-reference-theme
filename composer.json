@@ -1,0 +1,55 @@
+{
+	"name": "martin-pettersson/wordpress-reference-theme",
+	"description": "A WordPress theme to use as a reference.",
+	"type": "wordpress-theme",
+	"license": "GPL-2.0",
+	"authors": [
+		{
+			"name": "Martin Pettersson",
+			"email": "martin@moonwalkingbits.com"
+		}
+	],
+	"minimum-stability": "stable",
+	"scripts": {
+		"lint": "phpcs -p --standard=WordPress src/ $(ls *.php)",
+		"analyze": [
+			"phpmd --suffixes php --exclude vendor/,node_modules/,mysql/ ./ ansi phpmd.xml",
+			"phan --output-mode text --no-progress-bar --color --allow-polyfill-parser"
+		],
+		"package": [
+			"mkdir reference/",
+			"cp -r composer.* package* webpack.config.js *.php src/ resources/ languages/ reference/",
+			"composer install --working-dir reference/ --no-dev --ignore-platform-reqs",
+			"npm install --prefix reference/",
+			"npm run build --prefix reference/",
+			"rm -rf reference/webpack.config.js reference/composer.* reference/package* reference/node_modules/ reference/resources/{js,sass}/",
+			"zip -r reference.zip reference/",
+			"rm -rf reference/"
+		],
+		"initialize:translations": "find ./ -type f -name \"*.php\" -not -path \"./vendor/*\" -not -path \"./node_modules/*\" -not -path \"./.phan/*\" -not -path \"./assets/*\" | xargs xgettext --keyword=__ --output=languages/reference.pot",
+		"create:translation": "msginit --input=languages/reference.pot --output-file=languages/ll_CC.po",
+		"compile:translations": [
+			"msgfmt -o languages/sv_SE.mo languages/sv_SE.po"
+		]
+	},
+	"autoload": {
+		"wordpress": {
+			"Reference\\": "src/"
+		},
+		"files": [
+			"vendor/wordpress-autoload.php"
+		]
+	},
+	"require": {
+		"php": ">=7.4",
+		"moonwalkingbits/wordpress-autoloader-composer-plugin": "~0.2"
+	},
+	"require-dev": {
+		"phpmd/phpmd": "~2.10",
+		"phan/phan": "~4.0",
+		"squizlabs/php_codesniffer": "~3.6",
+		"wp-coding-standards/wpcs": "~2.3",
+		"dealerdirect/phpcodesniffer-composer-installer": "~0.7",
+		"johnpbloch/wordpress-core": "~5.8"
+	}
+}

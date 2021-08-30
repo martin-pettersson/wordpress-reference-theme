@@ -1,0 +1,79 @@
+/**
+ * Reference: Hero styles
+ *
+ * @package Reference
+ * @author Martin Pettersson
+ * @license GPL-2.0
+ * @since 0.1.0
+ */
+
+@use 'components/header';
+@use 'sass:math';
+@use 'settings/breakpoints';
+@use 'settings/colors';
+
+$accent: colors.$accent !default;
+$color: colors.$light !default;
+$dot-size: 0.125em !default;
+$text-shadow: 1px 1px 1px hsla(0, 0%, 0%, 0.5), 0 0 64px hsla(0, 0%, 0%, 0.75) !default;
+
+.hero {
+	align-items: center;
+	display: flex;
+	height: 50vh;
+	overflow: hidden;
+	position: relative;
+	width: 100%;
+
+	.has-cover-image & {
+		height: 100vh;
+	}
+
+	&__image {
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: cover;
+		height: 100%;
+		left: 0;
+		position: absolute;
+		top: 0;
+
+		// This is to hide blur edges.
+		transform: scale(1.1);
+
+		width: 100%;
+		z-index: -1;
+	}
+
+	&__title {
+		color: scale-color($color, $alpha: -5%);
+		font-size: clamp(2rem, -0.875rem + 8.333333vw, 3.5rem);
+		margin: header.$height auto 0 auto;
+		position: relative;
+		text-align: center;
+		text-shadow: $text-shadow;
+		width: calc(100% - 2em);
+
+		&::after {
+			background: $accent;
+			box-shadow: $text-shadow;
+			content: '';
+			display: inline-block;
+			height: $dot-size;
+			margin-left: math.div($dot-size, 2);
+			width: $dot-size;
+		}
+	}
+
+	&__video {
+		height: auto;
+		left: 50%;
+		min-height: 100%;
+		min-width: 100%;
+		position: absolute;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		width: auto;
+		z-index: -1;
+	}
+}

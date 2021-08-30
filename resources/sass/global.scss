@@ -1,0 +1,28 @@
+/**
+ * Reference: Global entrypoint
+ *
+ * @package Reference
+ * @author Martin Pettersson
+ * @license GPL-2.0
+ * @since 0.1.0
+ */
+
+@use 'components/header';
+@use 'components/hero';
+@use 'components/site-content';
+@use 'elements/em';
+@use 'elements/h1';
+@use 'elements/img';
+@use 'elements/p';
+@use 'generic/alignment';
+@use 'generic/reset';
+@use 'generic/typography';
+@use 'settings/colors';
+
+body {
+	background: colors.$light;
+
+	&.site-navigation--visible {
+		overflow: hidden;
+	}
+}

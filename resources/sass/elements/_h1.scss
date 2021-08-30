@@ -1,0 +1,29 @@
+/**
+ * Reference: H1 element styles
+ *
+ * @package Reference
+ * @author Martin Pettersson
+ * @license GPL-2.0
+ * @since 0.1.0
+ */
+
+@use 'components/header';
+@use 'sass:math';
+@use 'settings/breakpoints';
+@use 'settings/colors';
+
+$accent: colors.$accent !default;
+$color: colors.$light !default;
+$dot-size: 0.125em !default;
+$text-shadow: 1px 1px 1px hsla(0, 0%, 0%, 0.75) !default;
+
+h1 {
+	&::after {
+		background: $accent;
+		content: '';
+		display: inline-block;
+		height: $dot-size;
+		margin-left: math.div($dot-size, 2);
+		width: $dot-size;
+	}
+}

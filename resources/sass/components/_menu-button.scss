@@ -1,0 +1,96 @@
+/**
+ * Reference: Menu button styles
+ *
+ * @package Reference
+ * @author Martin Pettersson
+ * @license GPL-2.0
+ * @since 0.1.0
+ */
+
+@use 'sass:math';
+
+@use 'settings/breakpoints';
+@use 'settings/colors';
+
+$height: 1.5em !default;
+$width: 2.25em !default;
+$bar-height: math.div($height, 6) !default;
+$color: colors.$light !default;
+$accent: colors.$accent !default;
+
+%menu-button {
+	background: none;
+	border: 0;
+	border-radius: 0;
+	cursor: pointer;
+	height: 100%;
+	padding: 0;
+	user-select: none;
+	width: $width * 2;
+
+	&:focus,
+	&:hover {
+		background: none;
+		color: inherit;
+		outline: none;
+	}
+
+	.menu-button-icon {
+		height: $height;
+		margin: 0 auto;
+		padding: 0;
+		position: relative;
+		width: $width;
+
+		span {
+			background: $color;
+			border-radius: 1px;
+			display: block;
+			height: $bar-height;
+			left: 0;
+			position: absolute;
+			transition: transform 0.25s ease, width 0.25s ease, left 0.25s ease, top 0.25s ease;
+			width: 100%;
+
+			&:nth-child(1) {
+				top: 0;
+			}
+
+			&:nth-child(2),
+			&:nth-child(3) {
+				top: calc((#{$height} / 2) - (#{$bar-height} / 2));
+			}
+
+			&:nth-child(4) {
+				top: calc(#{$height} - #{$bar-height});
+				background: $accent;
+			}
+
+			body:not(.site-navigation--visible) .site-header--transparent & {
+				box-shadow: 1px 1px 1px hsla(0, 0%, 0%, 0.5);
+
+				&:nth-child(3) {
+					box-shadow: none;
+				}
+			}
+
+			.site-navigation--visible & {
+				&:nth-child(1),
+				&:nth-child(4) {
+					left: 50%;
+					top: calc((#{$height} / 2) - (#{$bar-height} / 2));
+					width: 0%;
+				}
+
+				&:nth-child(2) {
+					transform: rotate(45deg);
+				}
+
+				&:nth-child(3) {
+					box-shadow: -1px 1px 1px hsla(0, 0%, 0%, 0.1);
+					transform: rotate(-45deg);
+				}
+			}
+		}
+	}
+}

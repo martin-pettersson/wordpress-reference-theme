@@ -1,0 +1,44 @@
+name: Continuous Integration/Delivery
+on:
+    push:
+        branches:
+            - 'release/*'
+        tags:
+            - '*'
+    pull_requests:
+        types:
+            - opened
+            - synchronize
+            - reopened
+        branches:
+            - master
+jobs:
+    build:
+        name: Build Project
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Cache Composer Dependencies
+              uses: actions/cache@v2
+              with:
+                  path: /tmp/composer-cache
+                  key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+            - uses: php-actions/composer@v6
+              with:
+                  php_version: 7.4
+                  lint:
+    lint:
+        name: Lint Project
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Cache Composer Dependencies
+              uses: actions/cache@v2
+              with:
+                  path: /tmp/composer-cache
+                  key: ${{ runner.os }}-${{ hashFiles('composer.lock') }}
+            - uses: php-actions/composer@v6
+              with:
+                  php_version: 7.4
+                  command: lint
