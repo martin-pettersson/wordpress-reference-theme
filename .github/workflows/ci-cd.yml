@@ -27,20 +27,6 @@ jobs:
               with:
                   php_version: 7.4
                   command: install
-    list:
-        name: List Files
-        needs: build
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v2
-            - name: Cache Composer Dependencies
-              uses: actions/cache@v2
-              with:
-                  path: /tmp/composer-cache
-                  key: ${{ runner.os }}-${{ hashFiles('composer.lock') }}
-            - run: ls -1
-            - run: ls -1 vendor
-            - run: ls -1 vendor/bin
     lint:
         name: Lint Project
         needs: build
@@ -52,6 +38,10 @@ jobs:
               with:
                   path: /tmp/composer-cache
                   key: ${{ runner.os }}-${{ hashFiles('composer.lock') }}
+            - uses: php-actions/composer@v6
+              with:
+                  php_version: 7.4
+                  command: install
             - uses: php-actions/composer@v6
               with:
                   php_version: 7.4
