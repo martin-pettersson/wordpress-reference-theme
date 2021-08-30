@@ -61,17 +61,9 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-            - name: Cache Composer Dependencies
-              id: composer-cache
-              uses: actions/cache@v2
+            - uses: actions/setup-node@v1
               with:
-                  path: vendor/
-                  key: ${{ runner.os }}-${{ hashFiles('composer.lock') }}
-            - if: steps.composer-cache.outputs.cache-hit != 'true'
-              uses: php-actions/composer@v6
-              with:
-                  php_version: 7.4
-                  command: install
+                  node-version: latest
             - uses: php-actions/composer@v6
               with:
                   php_version: 7.4
