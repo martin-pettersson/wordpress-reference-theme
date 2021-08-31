@@ -1,6 +1,5 @@
 {
 	"name": "@martin-pettersson/wordpress-reference-theme",
-	"version": "0.1.0",
 	"description": "A WordPress theme to use as a reference.",
 	"main": "index.js",
 	"scripts": {

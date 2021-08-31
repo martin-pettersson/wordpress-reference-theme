@@ -21,7 +21,7 @@ $submenu-margin: 0.5em;
 $text-shadow: 1px 1px 1px hsla(0, 0%, 0%, 0.5);
 
 .site-navigation {
-	background: scale-color($background, $alpha: -5%);
+	background: scale-color($background, $alpha: -1%);
 	box-sizing: border-box;
 	font-family: typography.$body;
 	height: 100%;
@@ -169,7 +169,7 @@ $text-shadow: 1px 1px 1px hsla(0, 0%, 0%, 0.5);
 		}
 
 		@media (min-width: breakpoints.$mobile) {
-			background: scale-color($background, $alpha: -5%);
+			background: scale-color($background, $alpha: -1%);
 			border-bottom: 0;
 			box-shadow: none;
 			margin-top: $submenu-margin;
