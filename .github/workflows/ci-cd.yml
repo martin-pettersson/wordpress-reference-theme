@@ -107,11 +107,12 @@ jobs:
             - uses: actions/download-artifact@v2
               with:
                   name: reference-${{ env.VERSION }}
+            - run: unzip reference-${{ env.VERSION }} reference/
             - name: Sync
               uses: AEnterprise/rsync-deploy@v1.0
               env:
                   ARGS: -avzr --delete
-                  FOLDER: reference-${{ env.VERSION }}.zip
+                  FOLDER: reference/
                   SERVER_IP: ${{ secrets.REMOTE_HOST }}
                   SERVER_PORT: ${{ secrets.REMOTE_PORT }}
                   USERNAME: ${{ secrets.REMOTE_USER }}
