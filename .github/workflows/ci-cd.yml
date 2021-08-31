@@ -108,11 +108,12 @@ jobs:
               with:
                   name: reference-${{ env.VERSION }}
             - name: Sync
-              uses: up9cloud/action-rsync@v1.1
+              uses: AEnterprise/rsync-deploy@v1.0
               env:
                   ARGS: -avzr --delete
-                  SOURCE: reference-${{ env.VERSION }}.zip
-                  HOST: ${{ secrets.REMOTE_HOST }}
-                  USER: ${{ secrets.REMOTE_USER }}
-                  KEY: ${{ secrets.REMOTE_KEY }}
-                  TARGET: ${{ secrets.REMOTE_PATH }}
+                  FOLDER: reference-${{ env.VERSION }}.zip
+                  SERVER_IP: ${{ secrets.REMOTE_HOST }}
+                  SERVER_PORT: ${{ secrets.REMOTE_PORT }}
+                  USERNAME: ${{ secrets.REMOTE_USER }}
+                  DEPLOY_KEY: ${{ secrets.REMOTE_KEY }}
+                  SERVER_DESTINATION: ${{ secrets.REMOTE_PATH }}
