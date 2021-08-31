@@ -1,8 +1,6 @@
 name: Continuous Integration/Delivery
 on:
     push:
-        branches:
-            - 'release/*'
         tags:
             - '*'
     pull_request:
