@@ -54,6 +54,7 @@ jobs:
                   php_version: 7.4
                   command: analyze
     package:
+        if: startsWith(github.ref, 'refs/tags/')
         name: Package Theme
         needs:
             - lint
