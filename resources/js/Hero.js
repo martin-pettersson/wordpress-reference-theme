@@ -95,7 +95,7 @@ class Hero {
 		this.#displace_elements_on_scroll_reference = this.#displace_elements_on_scroll.bind( this );
 
 		if ( this.#image_element ?? this.#video_element ?? this.#title_element ) {
-			this.toggle_parallax_scrolling_effect( ! navigator.userAgentData?.mobile );
+			this.toggle_parallax_scrolling_effect( ! navigator.userAgent.toLowerCase().includes( 'mobile' ) );
 		}
 	}
 
