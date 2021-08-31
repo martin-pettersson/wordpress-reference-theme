@@ -51,6 +51,7 @@ $accent: colors.$accent !default;
 			position: absolute;
 			transition: transform 0.25s ease, width 0.25s ease, left 0.25s ease, top 0.25s ease;
 			width: 100%;
+			z-index: 1;
 
 			&:nth-child(1) {
 				top: 0;
@@ -64,6 +65,7 @@ $accent: colors.$accent !default;
 			&:nth-child(4) {
 				top: calc(#{$height} - #{$bar-height});
 				background: $accent;
+				z-index: 0;
 			}
 
 			body:not(.site-navigation--visible) .site-header--transparent & {
