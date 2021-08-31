@@ -107,7 +107,7 @@ jobs:
             - uses: actions/download-artifact@v2
               with:
                   name: reference-${{ env.VERSION }}
-            - run: unzip reference-${{ env.VERSION }} reference/
+            - run: unzip reference-${{ env.VERSION }} -d reference/
             - name: Sync
               uses: AEnterprise/rsync-deploy@v1.0
               env:
