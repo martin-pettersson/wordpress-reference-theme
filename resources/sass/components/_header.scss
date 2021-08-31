@@ -22,7 +22,7 @@ $dot-size: 0.125em !default;
 @use 'settings/typography';
 
 .site-header {
-	background: scale-color($background, $alpha: -5%);
+	background: scale-color($background, $alpha: -1%);
 	box-sizing: border-box;
 	color: scale-color($color, $alpha: -5%);
 	font-family: typography.$heading;
