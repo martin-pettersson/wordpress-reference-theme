@@ -61,7 +61,7 @@ $dot-size: 0.125em !default;
 			position: absolute;
 			right: 0;
 			top: 0;
-			transition: background 0.25s linear, backdrop-filter 0.25s linear;
+			transition: background 0.25s linear, backdrop-filter 0.25s ease;
 		}
 	}
 
