@@ -29,14 +29,11 @@ class Hero {
 	#scroll_container;
 
 	/**
-	 * Scroll semaphore.
-	 *
-	 * This is used in combination with requestAnimationFrame to optimize
-	 * scrolling.
+	 * Whether to use the parallax scrolling effect.
 	 *
 	 * @type {boolean}
 	 */
-	#scroll_semaphore;
+	#should_use_parallax_effect;
 
 	/**
 	 * Hero image element.
@@ -44,6 +41,13 @@ class Hero {
 	 * @type {HTMLImageElement}
 	 */
 	#image_element;
+
+	/**
+	 * Hero image initial transforms.
+	 *
+	 * @type {string}
+	 */
+	#image_element_initial_transforms;
 
 	/**
 	 * Hero video element.
@@ -67,16 +71,6 @@ class Hero {
 	#blur_offset;
 
 	/**
-	 * Reference to the displace_elements_on_scroll method.
-	 *
-	 * We need to pass the same method instance when removing the event listener
-	 * and since the method is bound we need to save a reference to it.
-	 *
-	 * @type {Function}
-	 */
-	#displace_elements_on_scroll_reference;
-
-	/**
 	 * Creates a new hero instance.
 	 *
 	 * @since 0.1.0
@@ -85,14 +79,20 @@ class Hero {
 	 * @param {number}      blur_offset Scroll offset before hero elements are blurred.
 	 */
 	constructor( element, scroll_container, blur_offset = 0 ) {
-		this.#element                               = element;
-		this.#scroll_container                      = scroll_container;
-		this.#scroll_semaphore                      = false;
-		this.#image_element                         = this.#element.querySelector( '.hero__image' );
-		this.#video_element                         = this.#element.querySelector( '.hero__video' );
-		this.#title_element                         = this.#element.querySelector( '.hero__title' );
-		this.#blur_offset                           = blur_offset;
-		this.#displace_elements_on_scroll_reference = this.#displace_elements_on_scroll.bind( this );
+		this.#element                          = element;
+		this.#scroll_container                 = scroll_container;
+		this.#should_use_parallax_effect       = false;
+		this.#image_element                    = this.#element.querySelector( '.hero__image' );
+		this.#image_element_initial_transforms = '';
+		this.#video_element                    = this.#element.querySelector( '.hero__video' );
+		this.#title_element                    = this.#element.querySelector( '.hero__title' );
+		this.#blur_offset                      = blur_offset;
+
+		if ( this.#image_element ) {
+			const transforms = getComputedStyle( this.#image_element ).transform.replace( 'none', '' );
+
+			this.#image_element_initial_transforms = transforms.length > 0 ? transforms + ' ' : '';
+		}
 
 		if ( this.#image_element ?? this.#video_element ?? this.#title_element ) {
 			this.toggle_parallax_scrolling_effect( ! navigator.userAgent.toLowerCase().includes( 'mobile' ) );
@@ -103,37 +103,23 @@ class Hero {
 	 * Enables/disables parallax scrolling effect.
 	 *
 	 * @since 0.1.0
-	 * @param {boolean} active Whether to enable parallax effect.
+	 * @param {?boolean} active Whether to enable parallax effect.
 	 */
-	toggle_parallax_scrolling_effect( active = true ) {
-		const action = active ? 'addEventListener' : 'removeEventListener';
+	toggle_parallax_scrolling_effect( active ) {
+		this.#should_use_parallax_effect = typeof active === 'boolean' ? active : ! this.#should_use_parallax_effect;
 
-		this.#scroll_container[ action ](
-			'scroll',
-			this.#displace_elements_on_scroll_reference,
-			{
-				capture: true,
-				passive: true
-			}
-		);
-		this.#displace_elements( active ? this.#scroll_container.scrollY : 0 );
+		this.#displace_elements_on_scroll();
 	}
 
 	/**
 	 * Displaces the hero elements on scroll.
 	 */
 	#displace_elements_on_scroll() {
-		if ( this.#scroll_semaphore ) {
-			return;
+		this.#displace_elements( this.#should_use_parallax_effect ? this.#scroll_container.scrollY : 0 );
+
+		if ( this.#should_use_parallax_effect ) {
+			requestAnimationFrame( this.#displace_elements_on_scroll.bind( this ) );
 		}
-
-		requestAnimationFrame( () => {
-			this.#displace_elements( this.#scroll_container.scrollY );
-
-			this.#scroll_semaphore = false;
-		} );
-
-		this.#scroll_semaphore = true;
 	}
 
 	/**
@@ -147,7 +133,7 @@ class Hero {
 				Math.min( 5, ( offset - this.#blur_offset ) / 30 ) :
 				0;
 
-			this.#image_element.style.backgroundPositionY = `calc(50% + ${offset / 2}px)`;
+			this.#image_element.style.transform = `${this.#image_element_initial_transforms}translateY(${offset / 2}px)`;
 			this.#image_element.style.filter = `blur(${blur}px)`;
 		}
 

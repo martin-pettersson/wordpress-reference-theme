@@ -86,7 +86,7 @@ class Theme {
 		this.#hero   = hero_element ? new Hero( hero_element, window, blur_offset ) : null;
 
 		if ( document.body.classList.contains( 'has-header-image' ) ) {
-			this.#header.toggle_transparent_header_on_scroll();
+			this.#header.toggle_transparent_header_on_scroll( true );
 		}
 	}
 

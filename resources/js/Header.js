@@ -43,24 +43,11 @@ class Header {
 	#scroll_container;
 
 	/**
-	 * Scroll semaphore.
-	 *
-	 * This is used in combination with requestAnimationFrame to optimize
-	 * scrolling.
+	 * Whether to toggle transparent header on scroll.
 	 *
 	 * @type {boolean}
 	 */
-	#scroll_semaphore;
-
-	/**
-	 * Reference to the toggle_transparent_header method.
-	 *
-	 * We need to pass the same method instance when removing the event listener
-	 * and since the method is bound we need to save a reference to it.
-	 *
-	 * @type {Function}
-	 */
-	#toggle_transparent_header_reference;
+	#should_toggle_transparent_header;
 
 	/**
 	 * Creates a new header instance.
@@ -71,11 +58,10 @@ class Header {
 	 * @param {Window}      scroll_container Scroll container.
 	 */
 	constructor( element, navigation, scroll_container ) {
-		this.#element                             = element;
-		this.#navigation                          = navigation;
-		this.#scroll_container                    = scroll_container;
-		this.#scroll_semaphore                    = false;
-		this.#toggle_transparent_header_reference = this.#toggle_transparent_header.bind( this );
+		this.#element                          = element;
+		this.#navigation                       = navigation;
+		this.#scroll_container                 = scroll_container;
+		this.#should_toggle_transparent_header = false;
 
 		if ( navigation ) {
 			const menu_button_element = this.#element.querySelector( '.site-header__menu-button' );
@@ -108,51 +94,36 @@ class Header {
 	 * Enables/disables toggling transparent header on scroll.
 	 *
 	 * @since 0.1.0
-	 * @param {boolean} active Whether to enable transparent header on scroll.
+	 * @param {?boolean} active Whether to enable transparent header on scroll.
 	 */
-	toggle_transparent_header_on_scroll( active = true ) {
-		const action = active ? 'addEventListener' : 'removeEventListener';
+	toggle_transparent_header_on_scroll( active ) {
+		this.#should_toggle_transparent_header = typeof active === 'boolean' ?
+			active :
+			! this.#should_toggle_transparent_header;
 
-		this.#scroll_container[ action ](
-			'scroll',
-			this.#toggle_transparent_header_reference,
-			{
-				capture: true,
-				passive: true
-			}
-		);
-
-		if ( ! active ) {
-			this.#element.classList.remove( Header.#TRANSPARENT_CLASS_NAME );
-		}
-
-		if ( active && this.#scroll_container.scrollY === 0 ) {
-			this.#element.classList.add( Header.#TRANSPARENT_CLASS_NAME );
-		}
+		this.#toggle_transparent_header();
 	}
 
 	/**
 	 * Toggles transparent header on scroll.
 	 */
 	#toggle_transparent_header() {
-		const y = this.#scroll_container.scrollY;
+		if ( ! this.#should_toggle_transparent_header ) {
+			this.#element.classList.remove( Header.#TRANSPARENT_CLASS_NAME );
 
-		if (
-			this.#scroll_semaphore ||
-			( y === 0 && this.#element.classList.contains( Header.#TRANSPARENT_CLASS_NAME ) ) ||
-			( y > 0 && ! this.#element.classList.contains( Header.#TRANSPARENT_CLASS_NAME ) )
-		) {
 			return;
 		}
 
-		requestAnimationFrame(() => {
-			const action = y > 0 ? 'remove' : 'add';
+		const y = this.#scroll_container.scrollY;
 
-			this.#element.classList[ action ]( Header.#TRANSPARENT_CLASS_NAME );
-			this.#scroll_semaphore = false;
-		});
+		if (
+			( y === 0 && ! this.#element.classList.contains( Header.#TRANSPARENT_CLASS_NAME ) ) ||
+			( y > 0 && this.#element.classList.contains( Header.#TRANSPARENT_CLASS_NAME ) )
+		) {
+			this.#element.classList[ y > 0 ? 'remove' : 'add' ]( Header.#TRANSPARENT_CLASS_NAME );
+		}
 
-		this.#scroll_semaphore = true;
+		requestAnimationFrame( this.#toggle_transparent_header.bind( this ) );
 	}
 
 	/**
