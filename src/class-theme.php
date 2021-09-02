@@ -23,7 +23,7 @@ class Theme {
 	 * @since 0.1.0
 	 * @var string
 	 */
-	public const VERSION = '0.1.0';
+	public const VERSION = '0.1.6';
 
 	/**
 	 * Single instance of this class.
