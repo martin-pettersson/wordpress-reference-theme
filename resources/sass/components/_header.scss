@@ -13,7 +13,7 @@ $height: 56px !default;
 $background: colors.$dark !default;
 $color: colors.$light !default;
 $accent: colors.$accent !default;
-$text-shadow: 1px 1px 1px hsla(0, 0%, 0%, 0.5) !default;
+$text-shadow: 1px 1px 1px hsla(0, 0%, 0%, 0.5), 0 0 $height hsla(0, 0%, 0%, 0.5) !default;
 $dot-size: 0.125em !default;
 
 @use 'components/menu-button';

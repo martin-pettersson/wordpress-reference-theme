@@ -18,7 +18,7 @@ $color: colors.$light !default;
 $height: 56px !default;
 $item-spacing: 1em !default;
 $submenu-margin: 0.5em;
-$text-shadow: 1px 1px 1px hsla(0, 0%, 0%, 0.5);
+$text-shadow: 1px 1px 1px hsla(0, 0%, 0%, 0.5), 0 0 $height hsla(0, 0%, 0%, 0.5) !default;
 
 .site-navigation {
 	background: scale-color($background, $alpha: -1%);
